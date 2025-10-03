@@ -1,10 +1,14 @@
 package com.boruebork.nukemod.event;
 
 import com.boruebork.nukemod.NukeModbyBoruebork;
+import com.boruebork.nukemod.entity.ModEntities;
+import com.boruebork.nukemod.entity.custom.AH64;
+import com.boruebork.nukemod.entity.custom.NukeEntity;
 import com.boruebork.nukemod.networking.ClientPayloadHandler;
 import com.boruebork.nukemod.networking.MyData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -22,5 +26,10 @@ public class ModEvents {
                 ClientPayloadHandler::handleDataOnMain
         );
 
+    }
+    @SubscribeEvent
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(ModEntities.NUKE.get(), NukeEntity.createAttributes().build());
+        event.put(ModEntities.AH64.get(), AH64.createAttributes().build());
     }
 }

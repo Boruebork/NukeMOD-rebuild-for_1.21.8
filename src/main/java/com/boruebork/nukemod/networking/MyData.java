@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public record MyData(String name, int age) implements CustomPacketPayload {
+public record MyData(String key, boolean value) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<MyData> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(NukeModbyBoruebork.MODID, "my_data"));
 
@@ -18,9 +18,9 @@ public record MyData(String name, int age) implements CustomPacketPayload {
     // The final parameter takes in the previous parameters in the order they are provided to construct the payload object
     public static final StreamCodec<ByteBuf, MyData> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8,
-            MyData::name,
-            ByteBufCodecs.VAR_INT,
-            MyData::age,
+            MyData::key,
+            ByteBufCodecs.BOOL,
+            MyData::value,
             MyData::new
     );
 

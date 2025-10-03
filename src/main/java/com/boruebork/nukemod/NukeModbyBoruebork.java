@@ -2,6 +2,7 @@ package com.boruebork.nukemod;
 
 import com.boruebork.nukemod.entity.ModEntities;
 import com.boruebork.nukemod.items.ModItems;
+import com.boruebork.nukemod.sound.ModSounds;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import org.lwjgl.glfw.GLFW;
@@ -31,7 +32,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(NukeModbyBoruebork.MODID)
 public class NukeModbyBoruebork {
@@ -44,11 +44,12 @@ public class NukeModbyBoruebork {
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public NukeModbyBoruebork(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
+        // Register the commonSetup method for mod loading
         modEventBus.addListener(this::commonSetup);
 
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
+        ModSounds.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in.

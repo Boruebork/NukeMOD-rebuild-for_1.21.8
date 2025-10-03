@@ -1,6 +1,8 @@
 {
 
   "item.nukemod.nuke": "Nuke",
-  "key.nukemod.k": "Spawn Nuke"
+  "key.nukemod.k": "Spawn Nuke",
+  "entity.nukemod.nuke": "Nuke",
+  "entity.nukemod.ah64": "AH-64 Apache Longbow"
 
  }
