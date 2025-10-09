@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 public class AH64Model extends EntityModel<AH64RenderState> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
@@ -30,6 +31,12 @@ public class AH64Model extends EntityModel<AH64RenderState> {
 		this.LP = root.getChild("LP");
 		this.wheels = root.getChild("wheels");
 		this.bb_main = root.getChild("bb_main");
+	}
+
+	@Override
+	public void setupAnim(AH64RenderState renderState) {
+		this.blades.setRotation(0, renderState.ageInTicks%360- 180, 0);
+		super.setupAnim(renderState);
 	}
 
 	public static LayerDefinition createBodyLayer() {

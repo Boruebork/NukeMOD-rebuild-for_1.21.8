@@ -22,6 +22,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -35,20 +36,50 @@ public class ClientEvents {
         GLFW.GLFW_KEY_N, // Default key is P
         "key.categories.misc" // Mapping will be in the misc category
     );
+    private static final KeyMapping keyMapping_z = new KeyMapping(
+            "key.nukemod.z", // Will be localized using this translation key
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_Z, // Default key is P
+            "key.categories.misc" // Mapping will be in the misc category
+    );
+    private static final KeyMapping keyMapping_c = new KeyMapping(
+            "key.nukemod.c", // Will be localized using this translation key
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_C, // Default key is P
+            "key.categories.misc" // Mapping will be in the misc category
+    );
     // In some physical client only class
 
     // Key mapping is lazily initialized so it doesn't exist until it is registered
     public static final Lazy<KeyMapping> SPAWN_MAPPING = Lazy.of(() -> keyMapping_k/*...*/);
-
+    public static final Lazy<KeyMapping> DOWN_MAPPING = Lazy.of(() -> keyMapping_c);
+    public static final Lazy<KeyMapping> UP_MAPPING = Lazy.of(() -> keyMapping_z/*...*/);
     @SubscribeEvent // on the mod event bus only on the physical client
     public static void registerBindings(RegisterKeyMappingsEvent event) {
         event.register(SPAWN_MAPPING.get());
+        event.register(UP_MAPPING.get());
+        event.register(DOWN_MAPPING.get());
     }
     @SubscribeEvent // on the game event bus only on the physical client
     public static void onClientTick(ClientTickEvent.Post event) {
         Options Input = Minecraft.getInstance().options;
-        if (SPAWN_MAPPING.get().consumeClick()) {
+        while (SPAWN_MAPPING.get().consumeClick()) {
             sendPacketWithData("K", true);
+        }
+
+    }
+    @SubscribeEvent // on the game event bus only on the physical client
+    public static void onClientTickC(ClientTickEvent.Post event) {
+        while (DOWN_MAPPING.get().consumeClick()) {
+            Minecraft.getInstance().gui.getChat().addMessage(Component.literal("C"));
+            sendPacketWithData("C", true);
+        }
+    }
+    @SubscribeEvent // on the game event bus only on the physical client
+    public static void onClientTickZ(ClientTickEvent.Post event) {
+        while (UP_MAPPING.get().consumeClick()) {
+            Minecraft.getInstance().gui.getChat().addMessage(Component.literal("Z"));
+            sendPacketWithData("Z", true);
         }
     }
     public static void sendPacketWithData(String key, boolean type){

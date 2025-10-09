@@ -44,13 +44,7 @@ public class NukeEntity extends LivingEntity {
         serverLevel.playSound(this, this.getOnPos(), ModSounds.NUKE_LAUNCH.get(), SoundSource.HOSTILE, 100, 0);
     }
 
-    @Override
-    public void onAddedToLevel() {
-        ServerLevel serverLevel = (ServerLevel) this.level();
-        serverLevel.playSound(this, this.getOnPos(), ModSounds.NUKE_LAUNCH.get(), SoundSource.HOSTILE, 100, 0);
-        super.onAddedToLevel();
 
-    }
 
     @Override
     public void tick() {

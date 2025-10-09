@@ -1,7 +1,5 @@
 package com.boruebork.nukemod.entity.custom;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -15,9 +13,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class AH64 extends LivingEntity implements PlayerRideable {
     public Vec3 movementVector;
+    public float speedUp;
     public AH64(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
         this.movementVector = Vec3.ZERO;
+    }
+
+    @Override
+    public void tick() {
+        //this.level().getEntitiesOfClass(NukeEntity.class, this.getBoundingBox().inflate(20), Entity::hasControllingPassenger);
+
+
+        super.tick();
     }
 
     @Override
@@ -27,30 +34,19 @@ public class AH64 extends LivingEntity implements PlayerRideable {
     public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 120)
-                .add(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.GRAVITY, 0);
+    }
+    public void Up(){
+        this.speedUp += 0.1f;
+    }
+    public void Down(){
+        this.speedUp -= 0.1f;
     }
 
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return false;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-    }
-    public void moveForward(){
-        movementVector.add(1, 0, 0);
-    }
-    public void moveBack(){
-        movementVector.add(1, 0, 0);
-    }
-    public void moveRight(){
-        movementVector.add(0, 0, 1);
-    }
-    public void moveLeft(){
-        movementVector.add(0, 0, -1);
     }
 
     @Override
@@ -72,21 +68,38 @@ public class AH64 extends LivingEntity implements PlayerRideable {
         return true;
     }
 
+
     @Override
     public void travel(Vec3 travelVector) {
+        LivingEntity controllingPassenger = this.getControllingPassenger();
+        if (controllingPassenger != null) {
+            // Copy passenger rotation
+            this.setYRot(controllingPassenger.getYRot());
+            this.yRotO = this.getYRot();
+            this.setXRot(controllingPassenger.getXRot() * 0.5f);
 
-        Player controllingPassenger = (Player) this.getControllingPassenger();
-        if (controllingPassenger != null){
-            Vec3 moveVec = new Vec3(controllingPassenger.xxa, controllingPassenger.yya, controllingPassenger.zza);
-            travelVector.add(moveVec);
+            // Simple movement calculation
+            Vec3 moveVec = new Vec3(
+                    controllingPassenger.xxa * 0.05f,
+                    speedUp,
+                    controllingPassenger.zza * 0.05f
+            );//.yRot(-this.getYRot() * ((float)Math.PI / 180F));
+            this.setDeltaMovement(moveVec);
+            super.travel(Vec3.ZERO);
+        } else {
+            super.travel(Vec3.ZERO);
         }
-
-        super.travel(travelVector);
     }
+
 
     @Override
     protected float getRiddenSpeed(Player player) {
         return 5;
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        return new Vec3(0, 0, 1);
     }
 
     @Override
