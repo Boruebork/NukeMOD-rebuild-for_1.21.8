@@ -20,6 +20,7 @@ public class AH64 extends LivingEntity implements PlayerRideable {
 
     @Override
     public void tick() {
+        //this.move(MoverType.PLAYER, new Vec3(0,this.speedUp, 0));
         //this.level().getEntitiesOfClass(NukeEntity.class, this.getBoundingBox().inflate(20), Entity::hasControllingPassenger);
 
 
@@ -32,7 +33,7 @@ public class AH64 extends LivingEntity implements PlayerRideable {
             Player player = (Player) this.getControllingPassenger();
             this.move(MoverType.SELF, new Vec3(player.xxa, this.speedUp, player.zza));
         }
-        super.travel(travelVector);
+        super.travel(new Vec3(0, this.speedUp, 0));
     }
 
     @Override
@@ -46,10 +47,14 @@ public class AH64 extends LivingEntity implements PlayerRideable {
                 .add(Attributes.GRAVITY, 0);
     }
     public void Up(){
-        this.speedUp += 0.1f;
+        this.speedUp += 1;
+        //this.move(MoverType.PLAYER, new Vec3(0, this.speedUp, 0));
+        System.out.println(speedUp);
     }
     public void Down(){
-        this.speedUp -= 0.1f;
+        this.speedUp -= 1;
+        //this.move(MoverType.PLAYER, new Vec3(0, this.speedUp, 0));
+        System.out.println(speedUp);
     }
 
     @Override
