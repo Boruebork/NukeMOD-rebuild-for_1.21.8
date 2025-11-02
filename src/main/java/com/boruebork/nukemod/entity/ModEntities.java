@@ -2,6 +2,7 @@ package com.boruebork.nukemod.entity;
 
 import com.boruebork.nukemod.NukeModbyBoruebork;
 import com.boruebork.nukemod.entity.custom.AH64;
+import com.boruebork.nukemod.entity.custom.HIMARS;
 import com.boruebork.nukemod.entity.custom.NukeEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +27,10 @@ public class ModEntities {
             ENTITY_TYPES.register("ah64", () -> EntityType.Builder.of(AH64::new, MobCategory.MISC)
                     .sized(3, 1)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(NukeModbyBoruebork.MODID, "ah64"))));
+    public static final Supplier<EntityType<HIMARS>> HIMARS =
+            ENTITY_TYPES.register("himars", () -> EntityType.Builder.of(HIMARS::new, MobCategory.MISC)
+                    .sized(3, 1)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(NukeModbyBoruebork.MODID, "himars"))));
 
 
     public static void register(IEventBus eventBus){

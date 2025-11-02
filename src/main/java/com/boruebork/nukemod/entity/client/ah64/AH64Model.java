@@ -35,7 +35,7 @@ public class AH64Model extends EntityModel<AH64RenderState> {
 
 	@Override
 	public void setupAnim(AH64RenderState renderState) {
-		this.blades.setRotation(0, renderState.ageInTicks%360- 180, 0);
+		this.blades.setRotation(0, renderState.bladeRot%360- 180, 0);
 		super.setupAnim(renderState);
 	}
 

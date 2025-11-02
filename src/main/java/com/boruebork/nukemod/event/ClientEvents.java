@@ -71,7 +71,7 @@ public class ClientEvents {
     @SubscribeEvent // on the game event bus only on the physical client
     public static void onClientTickC(ClientTickEvent.Post event) {
         while (DOWN_MAPPING.get().consumeClick()) {
-            Minecraft.getInstance().gui.getChat().addMessage(Component.literal("C"));
+            Minecraft.getInstance().gui.getChat().addMessage(Component.literal("C|"));
             sendPacketWithData("C", true);
         }
     }
